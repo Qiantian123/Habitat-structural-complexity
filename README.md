@@ -6,17 +6,17 @@ Authors: Tian Qian, Xiaoyu Ning, Fei Diao, Erik Jeppesen, Ruijie Shen, Hu He, Ku
 
 This deposit contains the raw mesocosm data and the R code used to produce all figures and
 tables in the manuscript. Every table and figure in the paper can be regenerated from
-`data/nutrient.csv` by running the corresponding script.
+`nutrient.csv` by running the corresponding script.
 
 ## Experimental design
 
 Twelve outdoor mesocosms were assigned to a 2 x 2 factorial design crossing artificial
 plant density (low, high) with the presence of mandarin fish (*Siniperca chuata*), a
 piscivore. Three mesocosms served as replicates in each of the four combinations, giving
-12 experimental units. Mandarin fish were stocked at day 18. Mesocosms were sampled eight
+12 experimental units. Mandarin fish were stocked at day 0. Mesocosms were sampled eight
 times, on days 0, 3, 6, 9, 12, 15, 18 and 21, giving 96 rows in the data file.
 
-`ID` is the permanent mesocosm identifier. The `treat` code is built from the two
+`ID` is the permanent mesocosm identifier. The `treat`  is built from the two
 treatment factors, where the first letter gives plant density (LP = low, HP = high) and the
 second letter gives piscivore state (MA = mandarin absent, MP = mandarin present). The
 `treat`, `Plant` and `Mandarin` columns are mutually consistent in all 96 rows.
@@ -26,28 +26,28 @@ second letter gives piscivore state (MA = mandarin absent, MP = mandarin present
 | File | Description |
 | --- | --- |
 | `README.md` | This file. File-level and column-level metadata for the whole deposit. |
-| `data/nutrient.csv` | The only data file. Raw and derived mesocosm measurements, 96 rows x 38 columns, one row per mesocosm per sampling day. Column definitions are given in the next section. |
-| `Fig1.R` | R code for Fig. 1. Plots crucian carp biomass and abundance at day 21 by plant density and piscivore presence. Writes `figures/carp_biomass.tiff`, `figures/carp_number.tiff` and the combined `figures/carp.tiff`. |
-| `Fig2.R` | R code for Fig. 2. Plots Daphnia, cladocerans, copepods, rotifers, total zooplankton and phytoplankton at day 21. Writes the six component files and the combined `figures/zooplankton_Day21.tiff`. |
-| `Fig3.R` | R code for Fig. 3. Time series of chlorophyll *a*, TN, DTN, TP and DTP across the eight sampling days. Writes the five component files and the combined `figures/nutrient_conc.tiff`. |
-| `Fig4.R` | R code for Fig. 4. Zooplankton body mass, zooplankton to phytoplankton ratio, and the chlorophyll *a* to TN and to TP ratios. Writes `figures/Zoopsizezppp.tiff`, `figures/ChlTNTP.tiff` and the combined `figures/ratio.tiff`. |
-| `FigS2.R` | R code for Fig. S2. Same quantities as Fig. 2 but for day 0, giving the pre-stocking baseline. Writes the six component files and `figures/zooplankton_Day0.tiff`. |
-| `FigS3.R` | R code for Fig. S3. Relative composition of the seven phytoplankton groups at day 21. Writes `figures/phyt_community.tiff`. |
+| `data/nutrient.csv` | The only data file. Raw and derived mesocosm measurements, 96 rows x 33 columns, one row per mesocosm per sampling day. Column definitions are given in the next section. |
+| `Fig1.R` | R code for Fig. 1. Plots crucian carp biomass and density at day 21. Writes `figures/figure 1.tiff`. |
+| `Fig2.R` | R code for Fig. 2. Plots biomasses of Daphnia, cladocerans, copepods, rotifers,  zooplankton and phytoplankton at day 21. Writes the six component files and the combined `figures/figure 2.tiff`. |
+| `Fig3.R` | R code for Fig. 3. Time series of chlorophyll *a*, TN, DTN, TP and DTP across the experiment. Writes the five component files and the combined `figures/figure 3.tiff`. |
+| `Fig4.R` | R code for Fig. 4. Zooplankton body mass, zooplankton to phytoplankton ratio, and the chlorophyll *a* to TN and to TP ratios. Writes and the combined `figures/figure 4.tiff`. |
+| `FigS2.R` | R code for Fig. S2. Same quantities as Fig. 2 but for day 0, giving the pre-stocking baseline. Writes the six component files and `figures/figure S2.tiff`. |
+| `FigS3.R` | R code for Fig. S3. Relative composition of the seven phytoplankton groups at day 21. Writes `figures/figure S3.tiff`. |
 | `Table1.R` | R code for Table 1. Fits the GLMMs for the day 21 biological response variables. Prints the coefficient tables to the console. |
-| `Table2.R` | R code for Table 2. Fits the GLMMs for the physicochemical response variables across all sampling days. Prints the coefficient tables to the console. |
+| `Table2.R` | R code for Table 2. Fits the GLMMs for the physicochemical response variables across the experiment. Prints the coefficient tables to the console. |
 | `figures/README.txt` | Placeholder note. The `figures/` folder is the output directory for all scripts and is kept in the deposit so the scripts run without editing. |
 
 ## How to run the code
 
 All scripts begin with `setwd()` and expect to be run from the deposit root, so that the
-relative paths `./data/nutrient.csv` and `./figures/` resolve correctly. Each script reads
+relative paths `nutrient.csv` and `./figures/` resolve correctly. Each script reads
 only `data/nutrient.csv`; no other input is needed and no network access is required.
 
 Required R packages: `ggplot2`, `dplyr`, `tidyr`, `tidyverse`, `Rmisc`, `ggpubr`,
 `patchwork`, `data.table` and `glmmTMB`. `glmmTMB` is needed only for `Table1.R` and
 `Table2.R`.
 
-## Column-level metadata for `data/nutrient.csv`
+## Column-level metadata for `nutrient.csv`
 
 The file is comma-delimited UTF-8 with a header row, no quoting and no index column.
 Missing values are recorded as empty fields and are read as `NA`. Only the physicochemical
@@ -87,7 +87,7 @@ maxima across the whole file and are given only as a reading aid.
 ### Zooplankton variables
 
 Zooplankton biomass is expressed in µg/L dry weight. `Daphnia` is a subset of `Cladoceran`, so
-`Zooplanktonbiomass` is the sum of `Cladoceran`, `Copepod` and `Rotifer` and does not include `Daphnia`
+`Zooplanktonbiomass` is the sum of `Cladoceranbiomass`, `Copepodbiomass` and `Rotiferbiomass` and does not include `Daphniabiomass`
 a second time. This relationship holds exactly in all rows where the data are present.
 
 | Column | Type | Unit | Days present | Description |
@@ -96,14 +96,14 @@ a second time. This relationship holds exactly in all rows where the data are pr
 | `Cladoceranbiomass` | numeric | µg/L | 0, 21 | Biomass of all Cladocerans. |
 | `Copepodbiomass` | numeric | µg/L | 0, 21 | Biomass of Copepoda. |
 | `Rotiferbiomass` | numeric | µg/L | 0, 21 | Biomass of Rotifera. |
-| `Zooplanktonbiomass` | numeric | µg/L | 0, 21 | Total zooplankton biomass. Derived, equal to `Cladoceran + Copepod + Rotifer`. |
+| `Zooplanktonbiomass` | numeric | µg/L | 0, 21 | Total zooplankton biomass. Derived, equal to `Cladoceranbiomass + Copepodbiomass + Rotiferbiomass`. |
 | `Zoopbodymass` | numeric | µg/ind. | 21 | Mean zooplankton body mass. Higher values indicate larger zooplankton. |
 
 ### Phytoplankton variables
 
 | Column | Type | Unit | Days present | Description |
 | --- | --- | --- | --- | --- |
-| `Phytoplanktonbiomass` | numeric | µg/L | 0, 21 | Total phytoplankton biomass. |
+| `Phytoplanktonbiomass` | numeric | mg/L | 0, 21 | Total phytoplankton biomass. |
 | `Cyanophyta` | numeric | proportion, 0 to 1 | 21 | Relative contribution of Cyanophyta to total phytoplankton biomass. |
 | `Bacillariophyta` | numeric | proportion, 0 to 1 | 21 | Relative contribution of Bacillariophyta (diatoms). |
 | `Pyrrophyta` | numeric | proportion, 0 to 1 | 21 | Relative contribution of Pyrrophyta (dinoflagellates). |
@@ -120,18 +120,14 @@ must not be summed.
 
 ### Derived variables
 
-| Column | Type | Unit | Days present | Description |
+| Column | Type | Unit | Description |
 | --- | --- | --- | --- | --- |
-| `ChlTN` | numeric | ratio x 1000 | all 8 | Chlorophyll *a* to total nitrogen ratio, stored as `Chl / TN / 1000`. Multiply by 1000 for the dimensionless ratio. |
-| `ChlTP` | numeric | ratio | all 8 | Chlorophyll *a* to total phosphorus ratio, stored as `Chl / TP`. |
-| `zppp` | numeric | ratio | 21 | Zooplankton to phytoplankton ratio, equal to `Total / Phytoplankton`. |
-| `Cla_proportion` | numeric | proportion, 0 to 1 | 21 | Proportion of total zooplankton biomass contributed by cladocerans, `Cladoceranbiomass / Zooplanktonbiomass`. |
-| `Cop_proportion` | numeric | proportion, 0 to 1 | 21 | Proportion of total zooplankton biomass contributed by copepods, `Copepodbiomass / Zooplanktonbiomass`. |
-| `Rot_proportion` | numeric | proportion, 0 to 1 | 21 | Proportion of total zooplankton biomass contributed by rotifers, `Rotiferbiomass / Zooplanktonbiomass`. |
-
-The three proportions `Cla_proportion`, `Cop_proportion` and `Rot_proportion` sum to 1 in every row where they are present.
-`zppp` reproduces exactly from `Total / Phytoplankton`. `ChlTN` reproduces exactly from
-`Chl / TN / 1000`.
+| `ChlTN` | numeric | ratio x 1000 | Chlorophyll *a* to total nitrogen ratio, stored as `Chl / TN / 1000`. Multiply by 1000 for the dimensionless ratio. |
+| `ChlTP` | numeric | ratio | Chlorophyll *a* to total phosphorus ratio, stored as `Chl / TP`. |
+| `zppp` | numeric | ratio | Zooplankton to phytoplankton ratio, equal to `Zooplanktonbiomass / Phytoplanktonbiomass`. |
+| `Cla_proportion` | numeric | proportion, 0 to 1 | Proportion of total zooplankton biomass contributed by cladocerans, `Cladoceranbiomass / Zooplanktonbiomass`. |
+| `Cop_proportion` | numeric | proportion, 0 to 1 | Proportion of total zooplankton biomass contributed by copepods, `Copepodbiomass / Zooplanktonbiomass`. |
+| `Rot_proportion` | numeric | proportion, 0 to 1 | Proportion of total zooplankton biomass contributed by rotifers, `Rotiferbiomass / Zooplanktonbiomass`. |
 
 ## Missing value conventions
 
@@ -143,7 +139,7 @@ to 18 because zooplankton was not sampled on those dates.
 
 ## Known data issues
 
-Three points require attention before the deposit is published. They are documented here
+Two points require attention before the deposit is published. They are documented here
 rather than silently corrected, because each one changes values that appear in the figures.
 
 1. `Carpdensity` does not hold integer counts. The values are multiples of 1/9 and range
