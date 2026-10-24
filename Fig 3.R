@@ -1,12 +1,13 @@
-# set working place and loading R packages---------
+# 1. set working place and loading R packages---------
 setwd("D:/R work place/artificial plant")
 library(ggplot2)
 library(dplyr)
 library(Rmisc)
 library(tidyr)
 library(ggpubr)
-setwd("D:/R work place/artificial plant")
-################# set my theme
+
+# 2. set figure format--------
+
 mytheme <- theme_bw() + 
   theme(panel.background = element_rect(),
         panel.grid = element_blank(),
@@ -19,10 +20,12 @@ mytheme <- theme_bw() +
         legend.background = element_blank(),
         legend.title = element_blank(),
         legend.text = element_text(size = 10))
-# TN ----
+
+# 3. loading TN concentration data ----
+
 nutrient <- read.csv("./data/nutrient.csv",header = T)
 data2 <- gather(nutrient,key = "nutrient",
-                value = "conc",9) %>%
+                value = "conc",6) %>%
   summarySE(measurevar = "conc",
             groupvars = c("Days",
                           "Plant",
@@ -36,6 +39,9 @@ data2$Plant <- factor(data2$Plant,levels = c("Low","High"),
 data2$Mandarin <- factor(data2$Mandarin,levels = c("Absent","Present"),
                          labels = c("Mandarin absent", "Mandarin present"))
 days <- c(0,3,6,9,12,15,18,21)
+
+# 4. plot TN concentration
+
 tiff("./figures/TN.tiff",res = 900, compression = "lzw",
      width = 14,height = 14,units = "cm")
 TN<-ggplot(data2,aes(Days,conc,color = Mandarin)) + 
@@ -58,10 +64,11 @@ TN<-ggplot(data2,aes(Days,conc,color = Mandarin)) +
 TN
 dev.off()
 
-# DTN ----
+# 5. loading DTN concentration data ----
+
 nutrient <- read.csv("./data/nutrient.csv",header = T)
 data2 <- gather(nutrient,key = "nutrient",
-                value = "conc",10) %>%
+                value = "conc",7) %>%
   summarySE(measurevar = "conc",
             groupvars = c("Days",
                           "Plant",
@@ -75,6 +82,10 @@ data2$Plant <- factor(data2$Plant,levels = c("Low","High"),
 data2$Mandarin <- factor(data2$Mandarin,levels = c("Absent","Present"),
                          labels = c("Mandarin absent", "Mandarin present"))
 days <- c(0,3,6,9,12,15,18,21)
+
+
+# 6. plot DTN concentration
+
 tiff("./figures/DTN.tiff",res = 900, compression = "lzw",
      width = 14,height = 14,units = "cm")
 DTN<-ggplot(data2,aes(Days,conc,color = Mandarin)) + 
@@ -97,11 +108,12 @@ DTN<-ggplot(data2,aes(Days,conc,color = Mandarin)) +
 DTN
 dev.off()
 
-# TP ----
+# 7. loading TP concentration data ----
+
 nutrient <- read.csv("./data/nutrient.csv",header = T) %>%
   mutate(TP = TP * 1000)
 data2 <- gather(nutrient,key = "nutrient",
-                value = "conc",11) %>%
+                value = "conc",8) %>%
   summarySE(measurevar = "conc",
             groupvars = c("Days",
                           "Plant",
@@ -115,6 +127,10 @@ data2$Plant <- factor(data2$Plant,levels = c("Low","High"),
 data2$Mandarin <- factor(data2$Mandarin,levels = c("Absent","Present"),
                          labels = c("Mandarin absent", "Mandarin present"))
 days <- c(0,3,6,9,12,15,18,21)
+
+
+# 8. plot TP concentration
+
 tiff("./figures/TP.tiff",res = 900, compression = "lzw",
      width = 14,height = 14,units = "cm")
 TP<-ggplot(data2,aes(Days,conc,color = Mandarin)) + 
@@ -137,11 +153,12 @@ TP<-ggplot(data2,aes(Days,conc,color = Mandarin)) +
 TP
 dev.off()
 
-# DTP ----
+# 9. loading DTP concentration data ----
+
 nutrient <- read.csv("./data/nutrient.csv",header = T) %>%
   mutate(DTP = DTP * 1000)
 data2 <- gather(nutrient,key = "nutrient",
-                value = "conc",12) %>%
+                value = "conc",9) %>%
   summarySE(measurevar = "conc",
             groupvars = c("Days",
                           "Plant",
@@ -155,6 +172,10 @@ data2$Plant <- factor(data2$Plant,levels = c("Low","High"),
 data2$Mandarin <- factor(data2$Mandarin,levels = c("Absent","Present"),
                          labels = c("Mandarin absent", "Mandarin present"))
 days <- c(0,3,6,9,12,15,18,21)
+
+
+# 10. plot DTP concentration
+
 tiff("./figures/DTP.tiff",res = 900, compression = "lzw",
      width = 14,height = 14,units = "cm")
 DTP<-ggplot(data2,aes(Days,conc,color = Mandarin)) + 
@@ -175,10 +196,11 @@ DTP<-ggplot(data2,aes(Days,conc,color = Mandarin)) +
 DTP
 dev.off()
 
-# Chl a ----
+# 11. loading Chl a concentration data ----
+
 nutrient <- read.csv("./data/nutrient.csv",header = T) 
 data2 <- gather(nutrient,key = "nutrient",
-                value = "conc",13) %>%
+                value = "conc",10) %>%
   summarySE(measurevar = "conc",
             groupvars = c("Days",
                           "Plant",
@@ -195,6 +217,8 @@ data2$Mandarin <- factor(data2$Mandarin,levels = c("Absent","Present"),
                          labels = c("Mandarin absent", "Mandarin present"))
 
 days <- c(0,3,6,9,12,15,18,21)
+
+# 12. plot Chl a concentration
 
 tiff("./figures/Chl.tiff",res = 900, compression = "lzw",
      width = 14,height = 14,units = "cm")
@@ -219,12 +243,14 @@ tiff("./figures/Chl.tiff",compression = "lzw",res = 900,
 Chl
 dev.off()
 
+# 13. plot Chl a, TN, DTN, TP, DTP, concentrations (figure 3)
+
 nutrient_conc <- ggarrange(Chl, TN, DTN, TP, DTP, label.x = 0.01,label.y = 1,ncol=1,
                            heights = c(1,0.9,0.9,0.9,1.06),
                            align='v',font.label = list(size = 14, color = "black", face = "plain", family = "serif"),   
                            labels = c("a","b","c","d","e") )
 nutrient_conc
-tiff("./figures/nutrient_conc.tiff",compression = "lzw",res = 900,
+tiff("./figures/figure3.tiff",compression = "lzw",res = 900,
      width = 14,height = 26,units = "cm")
 nutrient_conc
 dev.off()
