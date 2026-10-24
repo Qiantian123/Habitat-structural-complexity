@@ -1,24 +1,29 @@
+# 1. set working place and loading R packages---------
+
 setwd("D:/R work place/artificial plant")
 library(tidyverse)
 library(dplyr)
 library(glmmTMB)
 library(Rmisc)
 library(data.table)
+
 ########### GLMM ###########
+
 data  <- read.csv("./data/nutrient.csv",header = T) %>%
   filter(Days == 21) %>%
-  mutate(ChlTN = ChlTN/1000, ChlTP = ChlTP/1000, Daphnia = Daphnia/1000,
-         Cladoceran = Cladoceran / 1000, Copepod = Copepod / 1000,Rotifer = Rotifer / 1000, 
-         Total = Total / 1000, Phytoplankton = Phytoplankton * 0.29, zppp = zppp/1000/0.29) %>%
+  mutate(ChlTN = ChlTN/1000, ChlTP = ChlTP/1000, Daphniabiomass = Daphniabiomass/1000,
+         Cladoceranbiomass = Cladoceranbiomass / 1000, Copepodbiomass = Copepodbiomass / 1000,Rotiferbiomass = Rotiferbiomass / 1000, 
+         Zooplanktonbiomass = Zooplanktonbiomass / 1000, Phytoplanktonbiomass = Phytoplanktonbiomass * 0.29, zppp = zppp/1000/0.29) %>%
   mutate(Carpbiomass = log(Carpbiomass+1),
-         Carpnumber = log(Carpnumber+1),
-         Cladoceran = log(Cladoceran),
-         Copepod = log(Copepod),
-         Rotifer = log(Rotifer),
-         Total = log(Total),
-         Phytoplankton = log(Phytoplankton),
+         Carpdensity = log(Carpdensity+1),
+         Daphniabiomass = log(Daphniabiomass),
+         Cladoceranbiomass = log(Cladoceranbiomass),
+         Copepodbiomass = log(Copepodbiomass),
+         Rotiferbiomass = log(Rotiferbiomass),
+         Zooplanktonbiomass = log(Zooplanktonbiomass),
+         Phytoplanktonbiomass = log(Phytoplanktonbiomass),
          zppp = log(zppp),
-         Zoopsize = log(Zoopsize))
+         Zoopbodymass = log(Zoopbodymass))
 head(data)
 names(data)
 data$Plant <- factor(data$Plant,levels = c("Low","High"),
@@ -27,7 +32,7 @@ data$Mandarin <- factor(data$Mandarin,levels = c("Absent","Present"),
                         labels = c("Mandarin absent", "Mandarin present"))
 
 
-data2 <- gather(data,key = "group",value = "conc",18,20:27,38)
+data2 <- gather(data,key = "group",value = "conc",13,15:23)
 head(data2)
 
 # calculate GLM predictions
