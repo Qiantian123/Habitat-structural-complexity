@@ -1,4 +1,4 @@
-# 1 set working place and loading R packages---------
+# 1. set working place and loading R packages---------
 setwd("D:/R work place/artificial plant")
 library(tidyverse)
 library(Rmisc)
@@ -18,18 +18,18 @@ mytheme <- theme_bw() +
         legend.title = element_blank(),
         legend.text = element_text(size = 7))
 
-# 3. loading nutrient data ----
+# 3. loading phytoplankton composition data ----
+
 data <- read.csv("./data/nutrient.csv",header = T)%>%
   filter(Days == 21)
-# plot nutrients
+
 data$Plant <- factor(data$Plant,levels = c("Low","High"),
                      labels = c("Low","High"))
 
 data$Mandarin <- factor(data$Mandarin,levels = c("Absent","Present"),
                         labels = c("Piscivore absent","Piscivore present"))
 
-## phytoplankton composition-------
-data2 <- gather(data,key = "index",value = "biomass",23:29)
+data2 <- gather(data,key = "index",value = "biomass",24:30)
 data3 <- summarySE(data2,measurevar = "biomass",
                    groupvars = c("Plant",
                                  "Mandarin",
@@ -38,10 +38,12 @@ data3 <- summarySE(data2,measurevar = "biomass",
 data3$index <- factor(data3$index,labels = c("Bacillariophyta","Chlorophyta","Chrysophyta","Cryptophyta",
                                              "Cyanophyta","Euglenophyta","Pyrrophyta"))
 
-tiff("./figures/phyt_community.tiff",res = 900, compression = "lzw",
+# 4. loading phytoplankton composition 
+
+tiff("./figures/figureS3.tiff",res = 900, compression = "lzw",
      width = 14,height = 9,units = "cm")
 ggplot(data3,aes(Plant,biomass,fill = index)) + 
-  scale_fill_brewer(palette = 'Set3')+guides(fill=guide_legend(reverse=F,title=NULL,ncol=1))+
+  scale_fill_brewer(palette = 'Set2')+guides(fill=guide_legend(reverse=F,title=NULL,ncol=1))+
   geom_bar(aes(group = Mandarin), show.legend = T,
            stat = "identity",position = "fill",width = 0.7) + 
   facet_wrap(.~Mandarin,scales = "free_y",ncol = 2) +
