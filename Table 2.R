@@ -1,14 +1,18 @@
+# 1. set working place and loading R packages---------
+
 setwd("D:/R work place/artificial plant")
 library(tidyverse)
 library(dplyr)
 library(glmmTMB)
 library(Rmisc)
 library(data.table)
+
 ########### GLMM ###########
+
 data  <- read.csv("./data/nutrient.csv",header = T) %>%
   mutate(ChlTN = ChlTN/1000, ChlTP = ChlTP/1000,
          TP = TP*1000, DTP = DTP*1000) %>%
-  mutate(OSS = log(OSS),
+  mutate(
          TN = log(TN),
          DTN = log(DTN),
          TP = log(TP),
@@ -24,7 +28,7 @@ data$Mandarin <- factor(data$Mandarin,levels = c("Absent","Present"),
                         labels = c("Mandarin absent", "Mandarin present"))
 
 
-data2 <- gather(data,key = "group",value = "conc",8:13,16,17)
+data2 <- gather(data,key = "group",value = "conc",6:12)
 head(data2)
 
 # calculate GLM predictions
