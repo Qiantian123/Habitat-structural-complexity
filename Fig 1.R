@@ -1,4 +1,4 @@
-# 1 set working place and loading R packages---------
+# 1. set working place and loading R packages---------
 setwd("D:/R work place/artificial plant")
 
 library(ggplot2)
@@ -23,13 +23,13 @@ mytheme <- theme_bw() +
         legend.title = element_blank(),
         legend.text = element_text(size = 10))
 
-# 3. loading fish data ----
+# 3. loading carp biomass data ----
 nutrient <- read.csv("./data/nutrient.csv",header = T) %>%
   filter(Days != 0,Days != 3,Days != 6,Days != 9,
          Days != 12,Days != 15,Days != 18)
 
 data2 <- gather(nutrient,key = "nutrient",
-                value = "biomass",18) %>%
+                value = "biomass",13) %>%
   summarySE(measurevar = "biomass",
             groupvars = c("Days",
                           "Plant",
@@ -37,7 +37,7 @@ data2 <- gather(nutrient,key = "nutrient",
                           "nutrient"),
             na.rm = T) %>% na.omit()
 
-# plot carp biomass
+# 4. plot carp biomass
 data2$Plant <- factor(data2$Plant,levels = c("Low","High"),
                       labels = c("LPD", "HPD"))
 data2$Mandarin <- factor(data2$Mandarin,levels = c("Absent","Present"),
@@ -63,21 +63,21 @@ theme(strip.text = element_blank(),
 p1
 dev.off()
 
-
+# 5. loading carp density data ----
 nutrient <- read.csv("./data/nutrient.csv",header = T) %>%
   filter(Days != 0,Days != 3,Days != 6,Days != 9,
          Days != 12,Days != 15,Days != 18)
 
 data2 <- gather(nutrient,key = "nutrient",
-                value = "biomass",20) %>%
-  summarySE(measurevar = "biomass",
+                value = "density",15) %>%
+  summarySE(measurevar = "density",
             groupvars = c("Days",
                           "Plant",
                           "Mandarin",
                           "nutrient"),
             na.rm = T) %>% na.omit()
 
-# plot carp number
+# 6. plot carp density
 data2$Plant <- factor(data2$Plant,levels = c("Low","High"),
                       labels = c("LPD", "HPD"))
 data2$Mandarin <- factor(data2$Mandarin,levels = c("Absent","Present"),
@@ -86,17 +86,17 @@ data2$Mandarin <- factor(data2$Mandarin,levels = c("Absent","Present"),
 tiff("./figures/carp_number.tiff",res = 900, compression = "lzw",
      width = 14,height = 14,units = "cm")
 
-p2<-ggplot(data2,aes(factor(Plant),biomass)) + 
+p2<-ggplot(data2,aes(factor(Plant),density)) + 
   geom_bar(aes(fill = Mandarin), show.legend = T,
            stat = "identity",position = "dodge",width = 0.5) + 
-  geom_errorbar(aes(factor(Plant),group=Mandarin,ymin = biomass - se,
-                    ymax = biomass + se),position = position_dodge(width = 0.5),width = 0.2,
+  geom_errorbar(aes(factor(Plant),group=Mandarin,ymin = density - se,
+                    ymax = density + se),position = position_dodge(width = 0.5),width = 0.2,
                 size = 0.2) + 
   facet_grid(~nutrient,scales = "free_y") +
-  annotate("text",x = 0.8,y = 42,label = " ",size=5,family = "serif") +
+  annotate("text",x = 0.8,y = 4,label = " ",size=5,family = "serif") +
   
   labs(x = "", 
-       y = expression(Crucian~carp~number~(ind.))) + mytheme +
+       y = expression(Crucian~carp~density~(ind.~m^{-2}))) + mytheme +
   theme(strip.text = element_blank(),
         legend.position = "none",
         legend.direction = "horizontal")
@@ -108,7 +108,9 @@ carp <- ggarrange(p1, p2, common.legend = TRUE, legend="top",label.x = 0.065,lab
                   labels = c(" a","b") )
 carp
 
-tiff("./figures/carp.tiff",compression = "lzw",res = 900,
+# 7. plot carp biomass + carp density (figure 1)
+
+tiff("./figures/figure1.tiff",compression = "lzw",res = 900,
      width = 12,height = 8,units = "cm")
 
 carp
